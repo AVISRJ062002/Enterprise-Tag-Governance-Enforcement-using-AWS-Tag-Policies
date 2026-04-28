@@ -1,0 +1,68 @@
+# =============================================================================
+# .gitignore for Terraform Project
+# =============================================================================
+
+# Local .terraform directories
+**/.terraform/
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, except for template files
+# *.auto.tfvars are automatically loaded
+*.auto.tfvars
+*.override.tfvars
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you do want to track
+# !example_override.tf
+
+# Include tfplan files to ignore the planning output
+# Only .tfplan files matching the pattern are ignored
+.tfplan
+tfplan
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.tmp
+
+# Log files
+*.log
+
+# Sensitive files (if any)
+# credentials.json
+# *.pem
+# *.key
+backend.hcl
+
+# Build outputs
+dist/
+build/
+
+# Temporary local clone used for publishing
+.remote-inspect/

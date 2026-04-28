@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyCreateWithoutRequiredTags",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:CreateVolume",
+        "s3:PutObject",
+        "s3:CreateBucket",
+        "rds:CreateDBInstance",
+        "lambda:CreateFunction"
+      ],
+      "Resource": [
+        "arn:aws:ec2:*:*:instance/*",
+        "arn:aws:ec2:*:*:volume/*",
+        "arn:aws:s3:::*",
+        "arn:aws:rds:*:*:db:*",
+        "arn:aws:lambda:*:*:function:*"
+      ],
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestTag/Name": "${var.required_tag_name}"
+        },
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/${var.exemption_role_pattern}"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyModifyWithoutRequiredTags",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags"
+      ],
+      "Resource": [
+        "arn:aws:ec2:*:*:instance/*",
+        "arn:aws:ec2:*:*:volume/*",
+        "arn:aws:s3:::*",
+        "arn:aws:rds:*:*:db:*",
+        "arn:aws:lambda:*:*:function:*"
+      ],
+      "Condition": {
+        "ForAllValues:StringNotEquals": {
+          "aws:TagKeys": ["Name", "emailID", "phoneNo", "Place"]
+        },
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/${var.exemption_role_pattern}"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyStopTerminateWithoutNameTag",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:StopInstances",
+        "ec2:TerminateInstances"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:ResourceTag/Name": "${var.required_tag_name}"
+        },
+        "ArnNotLike": {
+          "aws:PrincipalARN": [
+            "arn:aws:iam::*:role/${var.exemption_role_pattern}"
+          ]
+        }
+      }
+    }
+  ]
+}
